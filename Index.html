@@ -1,54 +1,94 @@
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-     <!-- Bootstrap CSS -->
-     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-    
-    
-    <title>app</title>
+  <meta charset="utf-8">
+  <title>Vue Example</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous">
 </head>
+
 <body>
-    <div class="container">
-            <div class="row">
-                    <div="col-xs-12">
-                          <h1 class="jumbotron">VueJs</h1>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <h1 class="jumbotron">VueJs</h1>
+        <div id="app">
+          <table class="table table-stripped">
+            <thead>
+              <tr>
+                <th style="width:40px;"></th>
+                <th>Descripción</th>
+                <th style="width:200px;">Monto</th>
+                <th style="width:100px;">¿Cancelado?<th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td></td>
+                <td>
+                  <input type="text" class="form-control" v-model="newEntry.name" />
+                </td>
+                <td>
+                  <input type="text" class="form-control" v-model="newEntry.amount" />
+                </td>
+                <td>
+                  <button @click="add()" type="button" class="btn btn-success btn-block">Agregar</button>
+                </td>
+              </tr>
+              <tr v-if="items.length === 0">
+                <td colspan="4" class="text-center">
+                  No hay registros por mostrar
+                </td>
+              </tr>
+              <tr v-for="item, index in items">
+                <td>
+                  <button 
+                    @click="remove(index)"
+                    type="button" class="btn btn-danger btn-xs">
+                    <i class="glyphicon glyphicon-trash"></i>
+                  </button>
+                </td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.amount.toFixed(2) }}</td>
+                <td class="text-center" :title="item.paid ? 'Si' : 'No'">
+                  <button
+                    @click="changeToPaid(item)"
+                    class="btn btn-default btn-sm"
+                    :class="{ 'btn-success': item.paid  }">
 
-                          <div id="app">
-                                <table class="table table-stripped">
-                                    <thead>
-                                        <tr>
-                                                <th style="width:40px;"></th>
-                                            <th>Descripcion</th>
-                                            <th style="width:200px;">Monto</th>
-                                            <th="width:100px;">Cancelado?</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="item, index in items"></tr>
-                                        <td>
-                                        <button @click="remove()" type="button" class="btn btn-danger btn-xs">
-                                            <i class="glyphicon glyphicon-trash"></i>
+                      <i v-if="item.paid" class="glyphicon glyphicon-ok"></i>
+                      <i v-if="!item.paid" class="glyphicon glyphicon-remove"></i>
 
-                                        </button>
-                                    </td>
-                                        <td>{{ item.name }}</td>
-                                        <td>{{ item.amount.toFixed(2) }}</td>
-                                        <td class="text-center" v-bind:title="item.paid ? 'Si : 'No'">
-                                            <button class="btn btn-default btn-sm" 
-                                                    v-bind:class="{ 'btn-success': item.paid }">
-                                                    
-                                                    <i v-if="item.paid" class="glyphicon glyphicon-ok"></i>
-                                                    <i v-if="!item.paid" class="glyphicon glyphicon-remove"></i>
-                                                            
-                                            </button>
-                                        </td>
-                                    </tbody>
-                                </table>
-                            </div>
+                    </button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="text-danger">
+                <td></td>
+                <td class="text-right">Por pagar</td>
+                <td>{{ totalAmount(0) }}</td>
+                <td></td>
+              </tr>
+              <tr class="text-success">
+                <td></td>
+                <td class="text-right">Pagado</td>
+                <td>{{ totalAmount(1) }}</td>
+                <td></td>
+              </tr>
+              <tr class="text-info">
+                <td></td>
+                <td class="text-right">Total</td>
+                <td>{{ totalAmount(2) }}</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
                             <script src="app.js"></script>
                     </div>
             </div>
